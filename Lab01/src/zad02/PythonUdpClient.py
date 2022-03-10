@@ -6,6 +6,6 @@ serverPort = 9008
 msg = "źółta gęś"
 
 print('PYTHON UDP CLIENT')
-client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-client.sendto(bytes(msg, 'UTF-8'), (serverIP, serverPort))
+connectionHandler = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+connectionHandler.sendto(bytes(msg, 'UTF-8'), (serverIP, serverPort))
 

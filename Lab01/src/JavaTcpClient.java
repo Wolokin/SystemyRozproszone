@@ -14,7 +14,6 @@ public class JavaTcpClient {
         int portNumber = 12345;
 
         try (Socket socket = new Socket(hostName, portNumber)) {
-            // create socket
 
             // in & out streams
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
