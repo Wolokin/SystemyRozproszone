@@ -61,12 +61,11 @@ public class ConnectionHandler implements Runnable {
     private void processIncomingMessages() throws IOException {
         String msg;
         while (!clientSocket.isClosed() && (msg = input.readLine()) != null) {
-            switch (msg.toUpperCase()) {
-                case ControlMessage.QUIT:
-                    server.unregisterUser(this);
-                    return;
-                default:
-                    server.broadcastMessage(msg, this);
+            if (ControlMessage.QUIT.equalsIgnoreCase(msg)) {
+                server.unregisterUser(this);
+                return;
+            } else {
+                server.broadcastMessage(msg, this);
             }
         }
     }
@@ -82,7 +81,7 @@ public class ConnectionHandler implements Runnable {
             processIncomingMessages();
 
         } catch(IOException e) {
-            e.printStackTrace();
+            System.out.println(name+" process has ended");
         } finally {
             server.unregisterUser(this);
         }

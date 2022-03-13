@@ -13,6 +13,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
+    public static final String SERVER_ADDRESS = Specs.SERVER_ADDRESS;
     public static final int SERVER_PORT = Specs.SERVER_PORT;
     public static int MAX_CLIENTS = 10;
 
@@ -31,15 +32,16 @@ public class Server {
         ExecutorService listeners = Executors.newFixedThreadPool(2);
         TcpListener tcpListener = new TcpListener(this);
         listeners.submit(tcpListener);
-        UdpListener udpListener = new UdpListener(this, SERVER_PORT);
+        UdpListener udpListener = new UdpListener(this);
         listeners.submit(udpListener);
 
         System.out.println("Server ready");
 
         awaitCommands();
 
-        tcpListener.interrupt();
         listeners.shutdown();
+        tcpListener.interrupt();
+        udpListener.interrupt();
     }
 
     public boolean isNameUsed(String name) {

@@ -10,16 +10,16 @@ import java.nio.charset.StandardCharsets;
 
 public class UdpListener implements Runnable {
     private final Server server;
-    private final int serverPort;
+    private DatagramSocket socketReference;
 
-    public UdpListener(Server server, int serverPort) {
+    public UdpListener(Server server) {
         this.server = server;
-        this.serverPort = serverPort;
     }
 
     @Override
     public void run() {
-        try (DatagramSocket socket = new DatagramSocket(serverPort)) {
+        try (DatagramSocket socket = new DatagramSocket(Server.SERVER_PORT)) {
+            socketReference = socket;
             while (!socket.isClosed()) {
                 byte[] buffer = new byte[8192];
                 DatagramPacket datagramPacket = new DatagramPacket(buffer, buffer.length);
@@ -33,7 +33,7 @@ public class UdpListener implements Runnable {
 
                 System.out.println("Broadcasting multimedia data from "+name);
 
-                InetAddress address = InetAddress.getByName(Specs.SERVER_ADDRESS);
+                InetAddress address = InetAddress.getByName(Server.SERVER_ADDRESS);
                 byte[] bytes = msg.getBytes(StandardCharsets.UTF_8);
 
                 ConnectionHandler sender = server.getClient(name);
@@ -45,7 +45,13 @@ public class UdpListener implements Runnable {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("udp socket closed");
+        }
+    }
+
+    public void interrupt() {
+        if(!socketReference.isClosed()) {
+            socketReference.close();
         }
     }
 }

@@ -37,8 +37,8 @@ public class TcpListener implements Runnable {
 
             register();
 
-            while(!socket.isClosed()) {
-                String msg = input.readLine();
+            String msg;
+            while(!socket.isClosed() && (msg = input.readLine()) != null) {
                 System.out.print("\r"+msg+" ".repeat(100)+"\n> ");
             }
         } catch (IOException e) {
