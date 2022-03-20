@@ -21,14 +21,19 @@ def main_page():
 def generic_request(func, args):
     try:
         return func(*args)
-    except requests.exceptions.HTTPError as errh:
-        return "This call couldn't be completed. Please check your spelling and pokeapi.co status.\n" + str(errh)
-    except requests.exceptions.ConnectionError as errc:
-        return "This call couldn't be completed. Please check your connection.\n" + str(errc)
+    except requests.exceptions.HTTPError as errh:  # 4xx and 5xx
+        return "This request couldn't be completed. Please check your spelling and pokeapi.co status.<br><br>" + str(
+            errh)
+    except requests.exceptions.ConnectionError as errc:  # 3xx
+        return "This request couldn't be completed. Please check your connection.<br><br>" + str(errc)
     except requests.exceptions.Timeout as errt:
-        return "This call couldn't be completed. The API server didn't respond in time.\n" + str(errt)
+        return "This request couldn't be completed. The API server didn't respond in time.<br><br>" + str(errt)
     except requests.exceptions.RequestException as err:
-        return "This call couldn't be completed.\n" + str(err)
+        return "This request couldn't be completed.<br><br>" + str(err)
+    except KeyError as e:
+        return "Something went very wrong inside the server: KeyError[" + str(e) + "]"
+    except Exception as e:
+        return "Unexpected error: " + str(e)
 
 
 @app.route('/api/pokemon/info', methods=['GET'])

@@ -59,6 +59,7 @@ def wrap_html(title: str, body: str):
         </html>
     """
 
+
 def single_request(url):
     return requests.get(url)
 
@@ -67,27 +68,8 @@ def parallel_request(urls):
     with Pool(12) as p:
         results = p.map(single_request, urls)
     for r in results:
-        if r.status_code != 200:
-            raise Exception("Couldn't retrieve the data")
+        r.raise_for_status()
     return results
-
-
-def error_400(context):
-    return wrap_html("Client error", f"The information for the {context} could't be found. Please double check that "
-                                     f"the information you've requested exists and doesn't contain a spelling mistake")
-
-
-def error_500():
-    return wrap_html("Server error", f"The pokeapi server is unavailable at this moment, please try again later.")
-
-
-def handle_response_code(code, context):
-    if 400 <= code < 500:
-        return error_400(context)
-    elif 500 <= code:
-        return error_500()
-    else:
-        return wrap_html("Unknown reponse code", f"The external server returned code {code}")
 
 
 def create_sprite_block(json):
@@ -118,8 +100,8 @@ def get_pokemon_page(pokemon_name: str):
         <div>    
             {create_sprite_block(json)}
             <h3>Information</h3>
-            {create_table_block({"Pokedex no.": json['id'], "Type": ', '.join(list(map(lambda x: x['type']['name'], json['types'])))} 
-                | {"Abilities" : ', '.join(list(map(lambda x: x['ability']['name'].capitalize(), json['abilities'])))})} 
+            {create_table_block({"Pokedex no.": json['id'], "Type": ', '.join(list(map(lambda x: x['type']['name'], json['types'])))}
+                                | {"Abilities": ', '.join(list(map(lambda x: x['ability']['name'].capitalize(), json['abilities'])))})} 
             <br>
             <h3>Statistics</h3>
             {create_table_block(retrieve_stats(json))}
@@ -128,8 +110,7 @@ def get_pokemon_page(pokemon_name: str):
 
     endpoint = api_address + "pokemon/" + pokemon_name.lower() + "/"
     response = requests.get(endpoint)
-    if response.status_code != 200:
-        return handle_response_code(response.status_code, f"pokemon {pokemon_name}")
+    response.raise_for_status()
     return wrap_html(pokemon_name.capitalize(), create_pokemon_block(response.json()))
 
 
@@ -153,13 +134,9 @@ def get_ability_page(ability_name: str):
 
     endpoint = api_address + "ability/" + ability_name.lower() + "/"
     reply = requests.get(endpoint)
-    if reply.status_code != 200:
-        return handle_response_code(reply.status_code, f"ability {ability_name}")
+    reply.raise_for_status()
 
-    try:
-        return wrap_html(ability_name.capitalize(), create_ability_block(reply.json()))
-    except:
-        return wrap_html("Error", "Couldn't retrieve the data, check your connection")
+    return wrap_html(ability_name.capitalize(), create_ability_block(reply.json()))
 
 
 def get_type_page(type_name: str):
@@ -186,8 +163,6 @@ def get_type_page(type_name: str):
                                             "Average": int(np.average(stats[stat_name.lower()]))})}
                 </div>"""
 
-
-
         urls = []
         for pokemon in json['pokemon']:
             urls.append(pokemon['pokemon']['url'])
@@ -202,7 +177,7 @@ def get_type_page(type_name: str):
                                         "Double damage to": list_types(dmg_rel['double_damage_to']),
                                         "No damage from": list_types(dmg_rel['no_damage_from']),
                                         "Half damage from": list_types(dmg_rel['half_damage_from']),
-                                        "Double damage from": list_types(dmg_rel['double_damage_from']),})}
+                                        "Double damage from": list_types(dmg_rel['double_damage_from']), })}
                 </div>
                 <h2>Statistics</h2>
                 <div class=\"wrapper\">
@@ -223,11 +198,5 @@ def get_type_page(type_name: str):
 
     endpoint = api_address + "type/" + type_name.lower() + "/"
     reply = requests.get(endpoint)
-    if reply.status_code != 200:
-        return handle_response_code(reply.status_code, f"ability {type_name}")
-
-    try:
-        return wrap_html(type_name.capitalize(), create_type_block(reply.json()))
-    except:
-        return wrap_html("Error", "Couldn't retrieve the data, check your connection")
-
+    reply.raise_for_status()
+    return wrap_html(type_name.capitalize(), create_type_block(reply.json()))
