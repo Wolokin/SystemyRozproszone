@@ -119,7 +119,7 @@ def get_ability_page(ability_name: str):
         urls = []
         for pokemon in json['pokemon']:
             urls.append(pokemon['pokemon']['url'])
-        responses = parallel_request(urls[:3])
+        responses = parallel_request(urls)
         result = f"""<h3>Ability: {json['name'].capitalize()}</h3>
         <div>
                {create_table_block({"Description": json['effect_entries'][0]['effect']})}
@@ -166,7 +166,7 @@ def get_type_page(type_name: str):
         urls = []
         for pokemon in json['pokemon']:
             urls.append(pokemon['pokemon']['url'])
-        responses = parallel_request(urls[:3])
+        responses = parallel_request(urls)
         dmg_rel = json['damage_relations']
         stats = get_all_stats(responses)
         result = f"""<h1>Type: {json['name'].capitalize()}</h1>
