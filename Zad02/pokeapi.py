@@ -122,7 +122,7 @@ def get_ability_page(ability_name: str):
         responses = parallel_request(urls)
         result = f"""<h3>Ability: {json['name'].capitalize()}</h3>
         <div>
-               {create_table_block({"Description": json['effect_entries'][0]['effect']})}
+               {create_table_block({"Description": json['effect_entries'][1]['effect']})}
         </div>
         <h3>Pokemons with this ability</h3>
         <div class=\"wrapper\">"""
