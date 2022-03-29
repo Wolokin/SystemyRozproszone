@@ -8,6 +8,7 @@ import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class Z1_Consumer {
 
@@ -30,14 +31,23 @@ public class Z1_Consumer {
         Consumer consumer = new DefaultConsumer(channel) {
             @Override
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-                String message = new String(body, "UTF-8");
+                String message = new String(body, StandardCharsets.UTF_8);
                 System.out.println("Received: " + message);
+                int timeToSleep = Integer.parseInt(message);
+                try {
+                    Thread.sleep(timeToSleep * 1000L);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Processed: " + message);
+                channel.basicAck(envelope.getDeliveryTag(), false);
             }
         };
 
         // start listening
         System.out.println("Waiting for messages...");
-        channel.basicConsume(QUEUE_NAME, true, consumer);
+//        channel.basicQos(1);
+        channel.basicConsume(QUEUE_NAME, false, consumer);
 
         // close
 //        channel.close();
