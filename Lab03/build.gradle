@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    maven {
+        url uri("${projectDir}/libs")
+        metadataSources {
+            artifact()
+        }
+    }
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    implementation 'group:amqp-client:5.11.0'
+    implementation 'group:slf4j-api:1.7.29'
+    implementation 'group:slf4j-simple:1.6.2'
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="slf4j-simple-1.6.2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/group/slf4j-simple/1.6.2/slf4j-simple-1.6.2.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/libs/group/slf4j-simple/1.6.2/slf4j-simple-1.6.2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>

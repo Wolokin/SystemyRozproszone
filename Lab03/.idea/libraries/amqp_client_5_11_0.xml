@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="amqp-client-5.11.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/group/amqp-client/5.11.0/amqp-client-5.11.0.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/libs/group/amqp-client/5.11.0/amqp-client-5.11.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>
