@@ -50,7 +50,7 @@ public class Z1_Consumer {
         channel.basicConsume(QUEUE_NAME, false, consumer);
 
         // close
-//        channel.close();
-//        connection.close();
+        channel.close();
+        connection.close();
     }
 }
