@@ -44,7 +44,7 @@
             alert("You need to choose a username");
         } else if (!ws) {
             nameBox.setAttribute("readonly", "true");
-            ws = new WebSocket(`ws://localhost:12345/affirm/${nameBox.value}`);
+            ws = new WebSocket(`ws://localhost:12345/chat/${nameBox.value}`);
             if (ws) {
                 ws.onmessage = function ({data}) {
                     showMessage(`${data}`);

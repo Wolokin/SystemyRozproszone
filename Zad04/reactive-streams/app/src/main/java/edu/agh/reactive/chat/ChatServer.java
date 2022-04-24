@@ -20,9 +20,6 @@ import static akka.http.javadsl.server.PathMatchers.segment;
 import static java.util.regex.Pattern.compile;
 
 public class ChatServer extends AllDirectives {
-    Flow<Message, Message, NotUsed> serverFlow;
-    Sink<Message, NotUsed> sink;
-    Source<Message, NotUsed> source;
     ActorSystem system;
 
     public ChatServer() {
@@ -42,7 +39,7 @@ public class ChatServer extends AllDirectives {
                         .bind(server.concat(server.defaultRoute(), server.messageRoute()));
 
         System.out.println("Server online at http://localhost:12345/\nPress ENTER to stop...");
-        System.in.read();
+        while (System.in.read() == 0) ;
 
         binding
                 .thenCompose(ServerBinding::unbind)
@@ -59,10 +56,10 @@ public class ChatServer extends AllDirectives {
     private Route messageRoute() {
         Pair<Sink<Message, NotUsed>, Source<Message, NotUsed>> pair =
                 MergeHub.of(Message.class).toMat(BroadcastHub.of(Message.class), Keep.both()).run(system);
-        sink = pair.first();
-        source = pair.second();
-        serverFlow = Flow.fromSinkAndSource(sink, source);
-        return path(segment("affirm").slash(segment(compile("..*"))), name -> handleWebSocketMessages(
+        Sink<Message, NotUsed> sink = pair.first();
+        Source<Message, NotUsed> source = pair.second();
+        Flow<Message, Message, NotUsed> serverFlow = Flow.fromSinkAndSource(sink, source);
+        return path(segment("chat").slash(segment(compile("..*"))), name -> handleWebSocketMessages(
                 Flow.of(Message.class)
                         .map(msg -> (Message) TextMessage.create(name + ": " + msg.asTextMessage().getStrictText()))
                         .via(serverFlow)));
