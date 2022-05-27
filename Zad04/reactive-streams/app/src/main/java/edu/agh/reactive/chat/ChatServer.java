@@ -9,6 +9,7 @@ import akka.http.javadsl.model.ws.TextMessage;
 import akka.http.javadsl.server.AllDirectives;
 import akka.http.javadsl.server.Route;
 import akka.japi.Pair;
+import akka.stream.ClosedShape;
 import akka.stream.javadsl.*;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
@@ -55,14 +56,26 @@ public class ChatServer extends AllDirectives {
 
     private Route messageRoute() {
         Pair<Sink<Message, NotUsed>, Source<Message, NotUsed>> pair =
-                MergeHub.of(Message.class).toMat(BroadcastHub.of(Message.class), Keep.both()).run(system);
+                RunnableGraph.fromGraph(
+                        GraphDSL.create(
+                                MergeHub.of(Message.class),
+                                BroadcastHub.of(Message.class),
+                                Keep.both(),
+                                (builder, merge, bcast) -> {
+                                    builder
+                                            .from(merge)
+                                            .to(bcast);
+                                    return ClosedShape.getInstance();
+                                }
+                        )).run(system);
         Sink<Message, NotUsed> sink = pair.first();
         Source<Message, NotUsed> source = pair.second();
         Flow<Message, Message, NotUsed> serverFlow = Flow.fromSinkAndSource(sink, source);
         return path(segment("chat").slash(segment(compile("..*"))), name -> handleWebSocketMessages(
                 Flow.of(Message.class)
                         .map(msg -> (Message) TextMessage.create(name + ": " + msg.asTextMessage().getStrictText()))
-                        .via(serverFlow)));
+                        .via(serverFlow)
+        ));
     }
 
     public static void main(String[] args) throws IOException {

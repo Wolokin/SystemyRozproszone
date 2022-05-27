@@ -1,0 +1,15 @@
+2022-05-24 15:01:15,777 [myid:] - INFO  [main:o.a.z.s.q.QuorumPeerConfig@177] - Reading configuration from: /home/filip/Documents/SystemyRozproszone/Lab07/apache-zookeeper-3.8.0-bin/bin/../conf/zoo.cfg
+2022-05-24 15:01:15,781 [myid:] - ERROR [main:o.a.z.s.q.QuorumPeerMain@99] - Invalid config, exiting abnormally
+org.apache.zookeeper.server.quorum.QuorumPeerConfig$ConfigException: Error processing /home/filip/Documents/SystemyRozproszone/Lab07/apache-zookeeper-3.8.0-bin/bin/../conf/zoo.cfg
+	at org.apache.zookeeper.server.quorum.QuorumPeerConfig.parse(QuorumPeerConfig.java:198)
+	at org.apache.zookeeper.server.quorum.QuorumPeerMain.initializeAndRun(QuorumPeerMain.java:125)
+	at org.apache.zookeeper.server.quorum.QuorumPeerMain.main(QuorumPeerMain.java:91)
+Caused by: java.lang.IllegalArgumentException: /home/filip/Documents/SystemyRozproszone/Lab07/apache-zookeeper-3.8.0-bin/bin/../conf/zoo.cfg file is missing
+	at org.apache.zookeeper.server.util.VerifyingFileFactory.doFailForNonExistingPath(VerifyingFileFactory.java:54)
+	at org.apache.zookeeper.server.util.VerifyingFileFactory.validate(VerifyingFileFactory.java:47)
+	at org.apache.zookeeper.server.util.VerifyingFileFactory.create(VerifyingFileFactory.java:39)
+	at org.apache.zookeeper.server.quorum.QuorumPeerConfig.parse(QuorumPeerConfig.java:183)
+	... 2 common frames omitted
+Invalid config, exiting abnormally
+2022-05-24 15:01:15,782 [myid:] - INFO  [main:o.a.z.a.ZKAuditProvider@42] - ZooKeeper audit is disabled.
+2022-05-24 15:01:15,784 [myid:] - ERROR [main:o.a.z.u.ServiceUtils@42] - Exiting JVM with code 2
