@@ -14,7 +14,7 @@ module Demo
     long b;
     float c;
     string d;
-  }
+  };
 
   sequence<int> seqOfInts;
 

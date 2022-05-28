@@ -2,8 +2,7 @@
 # The client reads this property to create the reference to the
 # "hello" object in the server.
 #
-Calc1.Proxy=calc/calc11 : tcp -h 127.0.0.2 -p 10000 -z : udp -h 127.0.0.2 -p 10000 -z
-
+Bulbulator.Proxy=IoT/Bulbulator : tcp -h 127.0.0.1 -p 10000
 #
 # Warn about connection exceptions.
 #

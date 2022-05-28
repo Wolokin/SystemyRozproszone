@@ -10,10 +10,10 @@ module SmartHome
   sequence<BaseSetting> Settings;
   sequence<BaseReading> Readings;
 
-  class DeviceData {
-    Readings readings;
-    Settings settings;
-  };
+//  class DeviceData {
+//    Readings readings;
+//    Settings settings;
+//  };
 
   exception UnsupportedSettingException { string reason; };
   exception InvalidSettingValueException { string reason; };
@@ -23,14 +23,14 @@ module SmartHome
   };
   class DeviceMetadata extends BaseReading {
     string deviceName;
-    string serialNo;
+    int serialNo;
   };
   interface ISmartDevice {
-    idempotent DeviceData getData();
+    idempotent Readings getData();
     idempotent void changeSettings(Settings settings) throws UnsupportedSettingException, InvalidSettingValueException;
   };
-  class SmartDevice implements ISmartDevice{
-    DeviceData deviceData;
+  class SmartDevice {
+    DeviceMetadata deviceData;
   };
 
 
@@ -45,35 +45,36 @@ module SmartHome
   interface IBulbulator extends ISmartDevice {
     string bulbul(bool capital);
   };
-  class Bulbulator extends SmartDevice implements IBulbulator {
+  class Bulbulator extends SmartDevice {
     BulbulatorData bulbulatorData;
   };
 
 
-  interface IFridge extends ISmartDevice {
-    string performSelfCheck();
-  };
   class FridgeData extends BaseReading {
     short currentTemperature = 4;
     short targetTemperature = 2;
-  };
-  class Fridge extends SmartDevice implements IFridge {
-    FridgeData fridgeData;
+    short minTargetTemperature = -20;
+    short maxTargetTemperature = -20;
   };
   class TargetTemperatureSetting extends BaseSetting {
     short newTargetTemperature;
   };
+  interface IFridge extends ISmartDevice {
+    string performSelfCheck();
+  };
+  class Fridge extends SmartDevice {
+    FridgeData fridgeData;
+  };
 
 
   sequence<string> Food;
+  class AutomaticFridgeData extends BaseReading {
+    Food presentFood;
+  };
   interface IAutomaticFridge extends IFridge {
     Food findMissingFood(Food requiredFood);
   };
-  class AutomaticFridgeData extends BaseReading {
-    bool isDoorClosed;
-    Food presentFood;
-  };
-  class AutomaticFridge extends Fridge implements IAutomaticFridge {
+  class AutomaticFridge extends Fridge {
     AutomaticFridgeData automaticFridgeData;
   };
 
@@ -82,22 +83,33 @@ module SmartHome
     off, normal, musicSync, videoSync
   };
   sequence<LightMode> SupportedModes;
-  interface ILightController extends ISmartDevice {
-    string flash();
+  class LightModeSetting extends BaseSetting {
+    LightMode newMode;
   };
   class LightControllerData extends BaseReading {
     LightMode activeMode;
     SupportedModes supportedModes;
   };
-  class LightController extends SmartDevice implements ILightController {
+  interface ILightController extends ISmartDevice {
+    string flash();
+  };
+  class LightController extends SmartDevice {
     LightControllerData lightControllerData;
   };
 
 
+  dictionary<int, bool> LampIdToStates;
+  class PremiumLightControllerData extends BaseReading {
+    LampIdToStates lampStates;
+  };
+  class LampStatesSetting extends BaseSetting {
+    LampIdToStates newStates;
+  };
   interface IPremiumLightController extends ILightController {
     string colorfulFlash(int color);
   };
-  class PremiumLightController extends LightController implements IPremiumLightController {
+  class PremiumLightController extends LightController {
+    PremiumLightControllerData premiumLightControllerData;
   };
 
 };

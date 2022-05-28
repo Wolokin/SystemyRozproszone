@@ -22,7 +22,7 @@ public class Fridge extends SmartDevice
         super();
     }
 
-    public Fridge(DeviceData deviceData, FridgeData fridgeData)
+    public Fridge(DeviceMetadata deviceData, FridgeData fridgeData)
     {
         super(deviceData);
         this.fridgeData = fridgeData;
@@ -47,7 +47,7 @@ public class Fridge extends SmartDevice
     }
 
     /** @hidden */
-    public static final long serialVersionUID = 7162989407787114799L;
+    public static final long serialVersionUID = 3019507984746088807L;
 
     /** @hidden */
     @Override

@@ -22,7 +22,7 @@ public class AutomaticFridge extends Fridge
         super();
     }
 
-    public AutomaticFridge(DeviceData deviceData, FridgeData fridgeData, AutomaticFridgeData automaticFridgeData)
+    public AutomaticFridge(DeviceMetadata deviceData, FridgeData fridgeData, AutomaticFridgeData automaticFridgeData)
     {
         super(deviceData, fridgeData);
         this.automaticFridgeData = automaticFridgeData;
@@ -47,7 +47,7 @@ public class AutomaticFridge extends Fridge
     }
 
     /** @hidden */
-    public static final long serialVersionUID = 1226086754276720232L;
+    public static final long serialVersionUID = 4682758058862196253L;
 
     /** @hidden */
     @Override

@@ -22,7 +22,7 @@ public class Bulbulator extends SmartDevice
         super();
     }
 
-    public Bulbulator(DeviceData deviceData, BulbulatorData bulbulatorData)
+    public Bulbulator(DeviceMetadata deviceData, BulbulatorData bulbulatorData)
     {
         super(deviceData);
         this.bulbulatorData = bulbulatorData;
@@ -47,7 +47,7 @@ public class Bulbulator extends SmartDevice
     }
 
     /** @hidden */
-    public static final long serialVersionUID = 8665710090663865500L;
+    public static final long serialVersionUID = 6537724152803797319L;
 
     /** @hidden */
     @Override

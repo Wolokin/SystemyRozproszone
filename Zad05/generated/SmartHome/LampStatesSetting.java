@@ -15,29 +15,28 @@
 
 package SmartHome;
 
-public class LightController extends SmartDevice
+public class LampStatesSetting extends BaseSetting
 {
-    public LightController()
+    public LampStatesSetting()
     {
         super();
     }
 
-    public LightController(DeviceMetadata deviceData, LightControllerData lightControllerData)
+    public LampStatesSetting(java.util.Map<java.lang.Integer, java.lang.Boolean> newStates)
     {
-        super(deviceData);
-        this.lightControllerData = lightControllerData;
+        this.newStates = newStates;
     }
 
-    public LightControllerData lightControllerData;
+    public java.util.Map<java.lang.Integer, java.lang.Boolean> newStates;
 
-    public LightController clone()
+    public LampStatesSetting clone()
     {
-        return (LightController)super.clone();
+        return (LampStatesSetting)super.clone();
     }
 
     public static String ice_staticId()
     {
-        return "::SmartHome::LightController";
+        return "::SmartHome::LampStatesSetting";
     }
 
     @Override
@@ -47,14 +46,14 @@ public class LightController extends SmartDevice
     }
 
     /** @hidden */
-    public static final long serialVersionUID = 6128249982936541479L;
+    public static final long serialVersionUID = 5968607908363724655L;
 
     /** @hidden */
     @Override
     protected void _iceWriteImpl(com.zeroc.Ice.OutputStream ostr_)
     {
         ostr_.startSlice(ice_staticId(), -1, false);
-        ostr_.writeValue(lightControllerData);
+        LampIdToStatesHelper.write(ostr_, newStates);
         ostr_.endSlice();
         super._iceWriteImpl(ostr_);
     }
@@ -64,7 +63,7 @@ public class LightController extends SmartDevice
     protected void _iceReadImpl(com.zeroc.Ice.InputStream istr_)
     {
         istr_.startSlice();
-        istr_.readValue(v -> lightControllerData = v, LightControllerData.class);
+        newStates = LampIdToStatesHelper.read(istr_);
         istr_.endSlice();
         super._iceReadImpl(istr_);
     }

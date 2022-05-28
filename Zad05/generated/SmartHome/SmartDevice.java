@@ -21,12 +21,12 @@ public class SmartDevice extends com.zeroc.Ice.Value
     {
     }
 
-    public SmartDevice(DeviceData deviceData)
+    public SmartDevice(DeviceMetadata deviceData)
     {
         this.deviceData = deviceData;
     }
 
-    public DeviceData deviceData;
+    public DeviceMetadata deviceData;
 
     public SmartDevice clone()
     {
@@ -45,7 +45,7 @@ public class SmartDevice extends com.zeroc.Ice.Value
     }
 
     /** @hidden */
-    public static final long serialVersionUID = 8090161392910041591L;
+    public static final long serialVersionUID = -1057620515186014199L;
 
     /** @hidden */
     @Override
@@ -61,7 +61,7 @@ public class SmartDevice extends com.zeroc.Ice.Value
     protected void _iceReadImpl(com.zeroc.Ice.InputStream istr_)
     {
         istr_.startSlice();
-        istr_.readValue(v -> deviceData = v, DeviceData.class);
+        istr_.readValue(v -> deviceData = v, DeviceMetadata.class);
         istr_.endSlice();
     }
 }

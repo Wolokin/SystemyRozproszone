@@ -22,13 +22,10 @@ public class AutomaticFridgeData extends BaseReading
         super();
     }
 
-    public AutomaticFridgeData(boolean isDoorClosed, String[] presentFood)
+    public AutomaticFridgeData(String[] presentFood)
     {
-        this.isDoorClosed = isDoorClosed;
         this.presentFood = presentFood;
     }
-
-    public boolean isDoorClosed;
 
     public String[] presentFood;
 
@@ -49,14 +46,13 @@ public class AutomaticFridgeData extends BaseReading
     }
 
     /** @hidden */
-    public static final long serialVersionUID = 7635927160078167319L;
+    public static final long serialVersionUID = -203093156475043858L;
 
     /** @hidden */
     @Override
     protected void _iceWriteImpl(com.zeroc.Ice.OutputStream ostr_)
     {
         ostr_.startSlice(ice_staticId(), -1, false);
-        ostr_.writeBool(isDoorClosed);
         ostr_.writeStringSeq(presentFood);
         ostr_.endSlice();
         super._iceWriteImpl(ostr_);
@@ -67,7 +63,6 @@ public class AutomaticFridgeData extends BaseReading
     protected void _iceReadImpl(com.zeroc.Ice.InputStream istr_)
     {
         istr_.startSlice();
-        isDoorClosed = istr_.readBool();
         presentFood = istr_.readStringSeq();
         istr_.endSlice();
         super._iceReadImpl(istr_);

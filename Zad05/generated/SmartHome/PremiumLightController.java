@@ -22,10 +22,13 @@ public class PremiumLightController extends LightController
         super();
     }
 
-    public PremiumLightController(DeviceData deviceData, LightControllerData lightControllerData)
+    public PremiumLightController(DeviceMetadata deviceData, LightControllerData lightControllerData, PremiumLightControllerData premiumLightControllerData)
     {
         super(deviceData, lightControllerData);
+        this.premiumLightControllerData = premiumLightControllerData;
     }
+
+    public PremiumLightControllerData premiumLightControllerData;
 
     public PremiumLightController clone()
     {
@@ -44,13 +47,14 @@ public class PremiumLightController extends LightController
     }
 
     /** @hidden */
-    public static final long serialVersionUID = -6695099206258096948L;
+    public static final long serialVersionUID = -9122098652839683804L;
 
     /** @hidden */
     @Override
     protected void _iceWriteImpl(com.zeroc.Ice.OutputStream ostr_)
     {
         ostr_.startSlice(ice_staticId(), -1, false);
+        ostr_.writeValue(premiumLightControllerData);
         ostr_.endSlice();
         super._iceWriteImpl(ostr_);
     }
@@ -60,6 +64,7 @@ public class PremiumLightController extends LightController
     protected void _iceReadImpl(com.zeroc.Ice.InputStream istr_)
     {
         istr_.startSlice();
+        istr_.readValue(v -> premiumLightControllerData = v, PremiumLightControllerData.class);
         istr_.endSlice();
         super._iceReadImpl(istr_);
     }

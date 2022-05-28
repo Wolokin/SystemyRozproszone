@@ -17,7 +17,7 @@ package SmartHome;
 
 public interface ISmartDevice extends com.zeroc.Ice.Object
 {
-    DeviceData getData(com.zeroc.Ice.Current current);
+    BaseReading[] getData(com.zeroc.Ice.Current current);
 
     void changeSettings(BaseSetting[] settings, com.zeroc.Ice.Current current)
         throws InvalidSettingValueException,
@@ -58,9 +58,9 @@ public interface ISmartDevice extends com.zeroc.Ice.Object
     {
         com.zeroc.Ice.Object._iceCheckMode(com.zeroc.Ice.OperationMode.Idempotent, current.mode);
         inS.readEmptyParams();
-        DeviceData ret = obj.getData(current);
+        BaseReading[] ret = obj.getData(current);
         com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
-        ostr.writeValue(ret);
+        ReadingsHelper.write(ostr, ret);
         ostr.writePendingValues();
         inS.endWriteParams(ostr);
         return inS.setResult(ostr);

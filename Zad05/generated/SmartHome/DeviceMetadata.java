@@ -21,10 +21,9 @@ public class DeviceMetadata extends BaseReading
     {
         super();
         this.deviceName = "";
-        this.serialNo = "";
     }
 
-    public DeviceMetadata(String deviceName, String serialNo)
+    public DeviceMetadata(String deviceName, int serialNo)
     {
         this.deviceName = deviceName;
         this.serialNo = serialNo;
@@ -32,7 +31,7 @@ public class DeviceMetadata extends BaseReading
 
     public String deviceName;
 
-    public String serialNo;
+    public int serialNo;
 
     public DeviceMetadata clone()
     {
@@ -59,7 +58,7 @@ public class DeviceMetadata extends BaseReading
     {
         ostr_.startSlice(ice_staticId(), -1, false);
         ostr_.writeString(deviceName);
-        ostr_.writeString(serialNo);
+        ostr_.writeInt(serialNo);
         ostr_.endSlice();
         super._iceWriteImpl(ostr_);
     }
@@ -70,7 +69,7 @@ public class DeviceMetadata extends BaseReading
     {
         istr_.startSlice();
         deviceName = istr_.readString();
-        serialNo = istr_.readString();
+        serialNo = istr_.readInt();
         istr_.endSlice();
         super._iceReadImpl(istr_);
     }

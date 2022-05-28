@@ -12,6 +12,7 @@ import com.zeroc.Ice.Communicator;
 import com.zeroc.Ice.Util;
 import com.zeroc.Ice.ObjectAdapter;
 import com.zeroc.Ice.Identity;
+import sr.ice.server.devices.bulbulator.BulbulatorI;
 
 public class IceServer
 {
@@ -25,16 +26,13 @@ public class IceServer
 			communicator = Util.initialize(args);
 
 			// 2. Konfiguracja adaptera
-			ObjectAdapter adapter = communicator.createObjectAdapter("SmartHome2");
+			ObjectAdapter adapter = communicator.createObjectAdapter("SmartHome1");
 
 			// 3. Stworzenie serwanta/serwantów
-			CalcI calcServant1 = new CalcI();    
-			CalcI calcServant2 = new CalcI();    			
+			BulbulatorI bulbulatorServant = new BulbulatorI();
 						    
 			// 4. Dodanie wpisów do tablicy ASM, skojarzenie nazwy obiektu (Identity) z serwantem 
-			adapter.add(calcServant1, new Identity("calc11", "calc"));
-			adapter.add(calcServant2, new Identity("calc22", "calc"));
-			adapter.add(calcServant2, new Identity("calc33", "calc"));
+			adapter.add(bulbulatorServant, new Identity("Bulbulator", "IoT"));
 	        
 			// 5. Aktywacja adaptera i wejœcie w pêtlê przetwarzania ¿¹dañ
 			adapter.activate();

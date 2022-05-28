@@ -17,22 +17,22 @@ package SmartHome;
 
 public interface ISmartDevicePrx extends com.zeroc.Ice.ObjectPrx
 {
-    default DeviceData getData()
+    default BaseReading[] getData()
     {
         return getData(com.zeroc.Ice.ObjectPrx.noExplicitContext);
     }
 
-    default DeviceData getData(java.util.Map<String, String> context)
+    default BaseReading[] getData(java.util.Map<String, String> context)
     {
         return _iceI_getDataAsync(context, true).waitForResponse();
     }
 
-    default java.util.concurrent.CompletableFuture<DeviceData> getDataAsync()
+    default java.util.concurrent.CompletableFuture<BaseReading[]> getDataAsync()
     {
         return _iceI_getDataAsync(com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
     }
 
-    default java.util.concurrent.CompletableFuture<DeviceData> getDataAsync(java.util.Map<String, String> context)
+    default java.util.concurrent.CompletableFuture<BaseReading[]> getDataAsync(java.util.Map<String, String> context)
     {
         return _iceI_getDataAsync(context, false);
     }
@@ -43,14 +43,14 @@ public interface ISmartDevicePrx extends com.zeroc.Ice.ObjectPrx
      * @param sync -
      * @return -
      **/
-    default com.zeroc.IceInternal.OutgoingAsync<DeviceData> _iceI_getDataAsync(java.util.Map<String, String> context, boolean sync)
+    default com.zeroc.IceInternal.OutgoingAsync<BaseReading[]> _iceI_getDataAsync(java.util.Map<String, String> context, boolean sync)
     {
-        com.zeroc.IceInternal.OutgoingAsync<DeviceData> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "getData", com.zeroc.Ice.OperationMode.Idempotent, sync, null);
+        com.zeroc.IceInternal.OutgoingAsync<BaseReading[]> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "getData", com.zeroc.Ice.OperationMode.Idempotent, sync, null);
         f.invoke(true, context, null, null, istr -> {
-                     final com.zeroc.IceInternal.Holder<DeviceData> ret = new com.zeroc.IceInternal.Holder<>();
-                     istr.readValue(v -> ret.value = v, DeviceData.class);
+                     BaseReading[] ret;
+                     ret = ReadingsHelper.read(istr);
                      istr.readPendingValues();
-                     return ret.value;
+                     return ret;
                  });
         return f;
     }

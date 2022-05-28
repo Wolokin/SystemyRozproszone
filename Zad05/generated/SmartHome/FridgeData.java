@@ -22,17 +22,25 @@ public class FridgeData extends BaseReading
         super();
         this.currentTemperature = 4;
         this.targetTemperature = 2;
+        this.minTargetTemperature = -20;
+        this.maxTargetTemperature = -20;
     }
 
-    public FridgeData(short currentTemperature, short targetTemperature)
+    public FridgeData(short currentTemperature, short targetTemperature, short minTargetTemperature, short maxTargetTemperature)
     {
         this.currentTemperature = currentTemperature;
         this.targetTemperature = targetTemperature;
+        this.minTargetTemperature = minTargetTemperature;
+        this.maxTargetTemperature = maxTargetTemperature;
     }
 
     public short currentTemperature;
 
     public short targetTemperature;
+
+    public short minTargetTemperature;
+
+    public short maxTargetTemperature;
 
     public FridgeData clone()
     {
@@ -51,7 +59,7 @@ public class FridgeData extends BaseReading
     }
 
     /** @hidden */
-    public static final long serialVersionUID = 7463572677714600229L;
+    public static final long serialVersionUID = 6482130637685182907L;
 
     /** @hidden */
     @Override
@@ -60,6 +68,8 @@ public class FridgeData extends BaseReading
         ostr_.startSlice(ice_staticId(), -1, false);
         ostr_.writeShort(currentTemperature);
         ostr_.writeShort(targetTemperature);
+        ostr_.writeShort(minTargetTemperature);
+        ostr_.writeShort(maxTargetTemperature);
         ostr_.endSlice();
         super._iceWriteImpl(ostr_);
     }
@@ -71,6 +81,8 @@ public class FridgeData extends BaseReading
         istr_.startSlice();
         currentTemperature = istr_.readShort();
         targetTemperature = istr_.readShort();
+        minTargetTemperature = istr_.readShort();
+        maxTargetTemperature = istr_.readShort();
         istr_.endSlice();
         super._iceReadImpl(istr_);
     }
