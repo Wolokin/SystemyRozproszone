@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Ice.iml" filepath="$PROJECT_DIR$/Ice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/IceClient/IceClient.iml" filepath="$PROJECT_DIR$/IceClient/IceClient.iml" />
+    </modules>
+  </component>
+</project>
